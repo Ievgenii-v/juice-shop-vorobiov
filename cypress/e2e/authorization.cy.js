@@ -1,9 +1,12 @@
 import loginPage from '../support/Pages/LoginPage';
 import homePage from '../support/Pages/HomePage';
 import user from '../fixtures/user.json';
-import { backgroundLogin } from '../support/helper';
+import { backgroundLogin, backgroundRegistration } from '../support/helper';
 
 describe('Authorization tests', () => {
+	before(() => {
+		backgroundRegistration(user);
+	});
 	beforeEach(() => {
 		homePage.visitWithoutWelcomeBanner();
 		loginPage.visit();

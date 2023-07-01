@@ -8,11 +8,33 @@ export function backgroundLogin(user) {
 			password: user.password,
 		},
 	}).then((response) => {
-		console.log('RESPONS ===> ' + JSON.stringify(response));
+		console.log('RESPONSE Login ===> ' + JSON.stringify(response));
 		expect(response.status).to.be.equal(200);
 		cy.setCookie('token', response.body.authentication.token);
 		window.localStorage.setItem('token', response.body.authentication.token);
 		window.sessionStorage.setItem('bid', response.body.authentication.bid);
+	});
+}
+export function backgroundRegistration(user) {
+	cy.request({
+		failOnStatusCode: false,
+
+		method: 'POST',
+		url: '/api/Users/',
+		body: {
+			email: user.email,
+			password: user.password,
+			passwordRepeat: user.password,
+			securityQuestion: { id: 7 },
+			securityAnswer: user.petName,
+		},
+	}).then((response) => {
+		console.log('RESPONSE Registration ===> ' + JSON.stringify(response));
+		if (response.status === 201) {
+			cy.log(`NEW User Created = ${user.email}`);
+		} else {
+			cy.log(`User already exist! ${user.email}`);
+		}
 	});
 }
 
